@@ -1,0 +1,11 @@
+[build]
+target = "aarch64-unknown-none"
+kernel_address = "0x4000000"
+
+[target.aarch64-unknown-none]
+runner = "./qemu.sh"
+rustflags = [
+    "-C", "target-cpu=cortex-a53",
+    "-C", "link-arg=--script=.cargo/layout.ld",
+    "-C", "link-arg=--no-dynamic-linker",
+]
