@@ -6,13 +6,15 @@ authors = [
     "Taesoo Kim <taesoo@gatech.edu>",
     "Yechan Bae <yechan@gatech.edu>",
     "Sujin Park <sujin.park@gatech.edu>",
-    "Mansour Alharthi <mansourah@gatech.edu>"
+    "Mansour Alharthi <mansourah@gatech.edu>",
+    "Isaac Weintraub <weintraubisaac@gmail.com>"
 ]
 edition = "2018"
 
 [dependencies]
 cfg-if = "0.1"
-core_io = { version = "0.1.20190701", package = "core_io", optional = true }
+core_io = { path = "../core_io", optional = true }
+# core_io = { version = "0.1.20190701", package = "core_io", optional = true }
 
 [dev-dependencies]
 hashbrown = "0.6.3"

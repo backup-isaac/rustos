@@ -8,6 +8,11 @@ Requires nightly compiler. So far it's only been used with `nightly-2019-07-01`
 ## Building and running
 The repository originally provided by CS 3210 hardcoded a bunch of things for building with Ubuntu and also had binaries such as `aarch64-objdump` and `qemu-system-aarch64` checked into it. So a sane build process that isn't tied to linux and doesn't fill the repo with about 100 MB of binaries is a work in progress
 
+### Steps
+0. Have a Unix-like system with Python 3 installed
+1. `bin/configure`
+Checks to make sure dependencies are installed. If it reports missing dependencies, install them.
+
 ## What's in it
 - UART bootloader for kernel
 - Read only FAT32 file system

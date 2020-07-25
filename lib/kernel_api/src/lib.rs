@@ -1,4 +1,5 @@
 #![feature(asm)]
+#![feature(llvm_asm)]
 #![no_std]
 
 use core::fmt;

@@ -6,7 +6,8 @@ authors = [
     "Taesoo Kim <taesoo@gatech.edu>",
     "Yechan Bae <yechan@gatech.edu>",
     "Sujin Park <sujin.park@gatech.edu>",
-    "Mansour Alharthi <mansourah@gatech.edu>"
+    "Mansour Alharthi <mansourah@gatech.edu>",
+    "Isaac Weintraub <weintraubisaac@gmail.com>"
 ]
 edition = "2018"
 

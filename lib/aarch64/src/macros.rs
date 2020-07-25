@@ -22,7 +22,7 @@ macro_rules! defreg {
                 #[inline(always)]
                 pub unsafe fn get(&self) -> u64 {
                     let rtn;
-                    asm!(concat!("mrs $0, ", stringify!($regname))
+                    llvm_asm!(concat!("mrs $0, ", stringify!($regname))
                          : "=r"(rtn) ::: "volatile");
                     rtn
                 }
@@ -30,7 +30,7 @@ macro_rules! defreg {
                 #[inline(always)]
                 pub unsafe fn get_masked(&self, mask: u64) -> u64 {
                     let rtn: u64;
-                    asm!(concat!("mrs $0, ", stringify!($regname))
+                    llvm_asm!(concat!("mrs $0, ", stringify!($regname))
                          : "=r"(rtn) ::: "volatile");
                     rtn & mask
                 }
@@ -38,14 +38,14 @@ macro_rules! defreg {
                 #[inline(always)]
                 pub unsafe fn get_value(&self, mask: u64) -> u64 {
                     let rtn: u64;
-                    asm!(concat!("mrs $0, ", stringify!($regname))
+                    llvm_asm!(concat!("mrs $0, ", stringify!($regname))
                          : "=r"(rtn) ::: "volatile");
                     (rtn & mask) >> (mask.trailing_zeros())
                 }
 
                 #[inline(always)]
                 pub unsafe fn set(&self, val: u64) {
-                    asm!(concat!("msr ", stringify!($regname), ", $0")
+                    llvm_asm!(concat!("msr ", stringify!($regname), ", $0")
                          :: "r"(val) :: "volatile");
                 }
             }
@@ -75,7 +75,7 @@ macro_rules! defbit {
         #[allow(non_snake_case)]
         #[derive(Copy, Clone)]
         pub struct $regname (u64);
-        
+
         impl $regname {
             #[inline(always)]
             pub fn new(data: u64) -> $regname {

@@ -25,7 +25,7 @@ pub fn sleep(span: Duration) -> OsResult<Duration> {
     let mut elapsed_ms: u64;
 
     unsafe {
-        asm!("mov x0, $2
+        llvm_asm!("mov x0, $2
               svc $3
               mov $0, x0
               mov $1, x7"
@@ -41,7 +41,7 @@ pub fn time() -> Duration {
     let mut seconds: u64;
     let mut nanos: u64;
     unsafe {
-        asm!("svc $2
+        llvm_asm!("svc $2
               mov $0, x0
               mov $1, x1"
             : "=r"(seconds), "=r"(nanos)
@@ -54,7 +54,7 @@ pub fn time() -> Duration {
 
 pub fn exit() -> ! {
     unsafe {
-        asm!("svc $0"
+        llvm_asm!("svc $0"
             :
             : "i"(NR_EXIT)
             :
@@ -65,7 +65,7 @@ pub fn exit() -> ! {
 
 pub fn write(b: u8) {
     unsafe {
-        asm!("mov x0, $0
+        llvm_asm!("mov x0, $0
               svc $1"
             :
             : "r"(b), "i"(NR_WRITE)
@@ -77,7 +77,7 @@ pub fn write(b: u8) {
 pub fn getpid() -> u64 {
     let mut pid: u64;
     unsafe {
-        asm!("svc $1
+        llvm_asm!("svc $1
               mov $0, x0"
             : "=r"(pid)
             : "i"(NR_GETPID)
