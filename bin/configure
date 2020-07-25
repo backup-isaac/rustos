@@ -1,0 +1,41 @@
+#!/usr/bin/env python3
+
+import subprocess as sp
+import sys
+
+deps = ["make", "rustup"]
+cargo_deps = ["cargo-xbuild", "cargo-binutils"]
+
+color_reset = "\033[0m"
+colors = {
+  "": "\033[32m",
+  "info": "\033[36m",
+  "warn": "\033[33m",
+  "error": "\033[31m",
+}
+def log(level, msg):
+  spaces = " " * (6 - len(level))
+  print("{}[{}]{}{}{}".format(colors[level], level, color_reset, spaces, msg))
+  if level == "error":
+    sys.exit(1)
+
+def command(args):
+  log("info", " ".join(args))
+  sp.check_call(args)
+
+if __name__ == "__main__":
+  missing_deps = []
+  for d in deps:
+    ret = sp.run(["which", d], capture_output=True)
+    if ret.returncode:
+      missing_deps.append(d)
+    else:
+      log("info", "{} installed: {}".format(d, ret.stdout.decode()[:-1]))
+
+  if missing_deps:
+    log("error", "missing dependecies: {}".format(", ".join(missing_deps)))
+
+  command(["rustup", "toolchain", "install", "nightly"])
+  command(["rustup", "override", "set", "nightly"])
+  for d in cargo_deps:
+    command(["cargo", "install", d])
