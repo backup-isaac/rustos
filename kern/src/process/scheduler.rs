@@ -79,7 +79,7 @@ impl GlobalScheduler {
         Controller::new().enable(Interrupt::Timer1);
         Timer::new().tick_in(TICK);
         unsafe {
-            asm!("mov SP, $0
+            llvm_asm!("mov SP, $0
                   bl context_restore
                   ldp x28, x29, [SP], #16
                   adr lr, _start
@@ -259,7 +259,7 @@ pub extern "C" fn  test_user_process() -> ! {
         let error: u64;
         let elapsed_ms: u64;
         unsafe {
-            asm!("mov x0, $2
+            llvm_asm!("mov x0, $2
               svc 1
               mov $0, x0
               mov $1, x7"

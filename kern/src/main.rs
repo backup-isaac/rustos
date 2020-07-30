@@ -2,6 +2,8 @@
 #![feature(const_fn)]
 #![feature(decl_macro)]
 #![feature(asm)]
+#![feature(llvm_asm)]
+#![feature(negative_impls)]
 #![feature(global_asm)]
 #![feature(optin_builtin_traits)]
 #![feature(panic_info_message)]
