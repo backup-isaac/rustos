@@ -3,7 +3,7 @@
 import subprocess as sp
 import sys
 
-deps = ["make", "rustup"]
+deps = ["make", "qemu-system-aarch64", "rustup"]
 cargo_deps = ["cargo-xbuild", "cargo-binutils"]
 
 color_reset = "\033[0m"

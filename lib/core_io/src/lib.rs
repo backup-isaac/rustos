@@ -1,7 +1,9 @@
 #![no_std]
 
+#[cfg(feature = "alloc")]
 extern crate alloc;
 
+#[cfg(feature = "alloc")]
 use alloc::{
     boxed::Box,
     vec::Vec,
@@ -382,6 +384,7 @@ fn slice_write(pos_mut: &mut u64, slice: &mut [u8], buf: &[u8]) -> Result<usize>
     Ok(amt)
 }
 
+#[cfg(feature = "alloc")]
 impl Write for Cursor<Box<[u8]>> {
     #[inline]
     fn write(&mut self, buf: &[u8]) -> Result<usize> {
@@ -394,6 +397,7 @@ impl Write for Cursor<Box<[u8]>> {
     }
 }
 
+#[cfg(feature = "alloc")]
 // Resizing write implementation
 fn vec_write(pos_mut: &mut u64, vec: &mut Vec<u8>, buf: &[u8]) -> Result<usize> {
     let pos: usize = (*pos_mut).try_into().map_err(|_| {
@@ -423,6 +427,7 @@ fn vec_write(pos_mut: &mut u64, vec: &mut Vec<u8>, buf: &[u8]) -> Result<usize> 
     Ok(buf.len())
 }
 
+#[cfg(feature = "alloc")]
 impl Write for Cursor<Vec<u8>> {
     fn write(&mut self, buf: &[u8]) -> Result<usize> {
         vec_write(&mut self.pos, &mut self.inner, buf)
@@ -823,5 +828,35 @@ impl<T> Read for Cursor<T> where T: AsRef<[u8]> {
         Read::read_exact(&mut self.fill_buf()?, buf)?;
         self.pos += n as u64;
         Ok(())
+    }
+}
+
+// Forwarding implementations
+impl<R: Read + ?Sized> Read for &mut R {
+    #[inline]
+    fn read(&mut self, buf: &mut [u8]) -> Result<usize> {
+        (**self).read(buf)
+    }
+
+    #[inline]
+    fn read_exact(&mut self, buf: &mut [u8]) -> Result<()> {
+        (**self).read_exact(buf)
+    }
+}
+
+impl<W: Write + ?Sized> Write for &mut W {
+    #[inline]
+    fn write(&mut self, buf: &[u8]) -> Result<usize> {
+        (**self).write(buf)
+    }
+
+    #[inline]
+    fn flush(&mut self) -> Result<()> {
+        (**self).flush()
+    }
+
+    #[inline]
+    fn write_all(&mut self, buf: &[u8]) -> Result<()> {
+        (**self).write_all(buf)
     }
 }

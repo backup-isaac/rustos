@@ -1,4 +1,5 @@
 #![feature(asm)]
+#![feature(llvm_asm)]
 #![feature(global_asm)]
 
 #![cfg_attr(not(test), no_std)]
@@ -27,9 +28,9 @@ const MAX_BINARY_SIZE: usize = BOOTLOADER_START_ADDR - BINARY_START_ADDR;
 
 /// Branches to the address `addr` unconditionally.
 unsafe fn jump_to(addr: *mut u8) -> ! {
-    asm!("br $0" : : "r"(addr as usize));
+    llvm_asm!("br $0" : : "r"(addr as usize));
     loop {
-        asm!("wfe" :::: "volatile")
+        llvm_asm!("wfe" :::: "volatile")
     }
 }
 
