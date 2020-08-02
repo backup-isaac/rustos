@@ -41,8 +41,8 @@ clean:
 	rm -rf build
 
 install: build
-	@echo "+ Installing build/$(KERN).elf [install-kernel.py]"
-	@$(ROOT)/bin/install-kernel.py build/$(KERN).elf
+	@echo "+ Installing build/$(KERN).elf [install-kernel]"
+	@$(ROOT)/bin/install-kernel build/$(KERN).elf
 
 test:
 	cargo test --target=$(HOST)

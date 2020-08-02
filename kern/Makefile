@@ -5,7 +5,7 @@ TARGET := target/aarch64-unknown-none/release/${KERN}
 SDCARD ?= $(ROOT)/ext/fat32-imgs/mock1.fat32.img
 BIN := build/$(KERN).bin
 # SDCARD ?= $(ROOT)/user/fs.img
-TTY_PATH := /dev/ttyUSB0
+TTY_PATH ?= /dev/ttyUSB0
 QEMU_ARGS ?=
 QEMU_FLAGS := 										\
 	-nographic											\
@@ -55,9 +55,9 @@ clean:
 	cargo clean
 	rm -rf build
 
-# install: build
-# 	@echo "+ Installing build/$(KERN).elf [install-kernel.py]"
-# 	@$(ROOT)/bin/install-kernel.py build/$(KERN).elf
+install: build
+	@echo "+ Installing build/$(KERN).elf [install-kernel]"
+	@$(ROOT)/bin/install-kernel build/$(KERN).elf
 
 test:
 	cargo test --target=$(HOST) -- --test-threads=1 --nocapture
